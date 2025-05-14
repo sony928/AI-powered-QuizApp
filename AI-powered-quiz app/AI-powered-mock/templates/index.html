@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI MCQ Exam Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #8360c3, #2ebf91);
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            color: #333;
+            overflow: hidden;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h2 {
+            color: #2ebf91;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #444;
+        }
+        .form-control, .form-select {
+            border-radius: 12px;
+            border: 2px solid #2ebf91;
+            padding: 10px;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #8360c3;
+            box-shadow: 0 0 5px rgba(131, 96, 195, 0.5);
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #2ebf91 0%, #8360c3 100%);
+            border: none;
+            font-weight: 600;
+            padding: 12px 20px;
+            border-radius: 50px;
+            color: #fff;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(46, 191, 145, 0.4);
+        }
+        .container-bg {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        .text-center h2 {
+            font-size: 2.5rem;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="container-bg">
+        <div class="card p-5 w-100 mx-auto" style="max-width: 500px;">
+            <h2 class="text-center">AI-Powered MCQ Generator</h2>
+            <form action="/generate" method="POST">
+                <div class="mb-3">
+                    <label for="user_input" class="form-label">Enter Keyword or Topic</label>
+                    <input type="text" class="form-control" id="user_input" name="user_input" required>
+                </div>
+                <div class="mb-3">
+                    <label for="difficulty" class="form-label">Select Difficulty</label>
+                    <select class="form-select" id="difficulty" name="difficulty">
+                        <option>Easy</option>
+                        <option>Medium</option>
+                        <option>Hard</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="num_questions" class="form-label">Number of Questions</label>
+                    <input type="number" class="form-control" id="num_questions" name="num_questions" value="5" min="1" max="20" required>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-primary w-100" type="submit">Generate Exam</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

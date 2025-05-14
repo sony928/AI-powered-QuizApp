@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exam Score</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+            font-family: 'Roboto Slab', serif;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            color: #ffffff;
+            border-radius: 25px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            animation: fadeIn 1s ease;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .quote {
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, #ff9a9e, #fad0c4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 20px 0;
+        }
+
+        .btn-primary, .btn-secondary {
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: 600;
+            color: #fff;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .btn-primary:hover, .btn-secondary:hover {
+            background: linear-gradient(90deg, #0072ff, #00c6ff);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .score-number {
+            background: linear-gradient(90deg, #30cfd0, #330867);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .celebration-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .confetti {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container d-flex justify-content-center align-items-center vh-100 position-relative">
+    <canvas class="confetti"></canvas>
+    <div class="card text-center" style="max-width: 600px; z-index: 1;">
+        <div class="celebration-icon">
+            {% if score / total >= 0.9 %}
+                🎉
+            {% elif score / total >= 0.75 %}
+                🏆
+            {% elif score / total >= 0.5 %}
+                👍
+            {% else %}
+                💡
+            {% endif %}
+        </div>
+
+        <h2>Congratulations!</h2>
+        <p class="fs-4">You scored <span class="score-number">{{ score }}</span> out of <span class="score-number">{{ total }}</span></p>
+
+        <div class="quote">
+            {% if score / total >= 0.9 %}
+                🌟 Excellent! You're a superstar! 🌟
+            {% elif score / total >= 0.75 %}
+                💪 Great job! Keep it up! 💪
+            {% elif score / total >= 0.5 %}
+                👍 Good effort! Practice makes perfect! 👍
+            {% else %}
+                🙌 Don’t worry! Keep trying and you'll improve! 🙌
+            {% endif %}
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <a href="/" class="btn btn-primary">Take Another Exam</a>
+            <a href="/review-attempt" class="btn btn-secondary">Review Attempt</a>
+        </div>
+    </div>
+</div>
+
+<audio id="cheerSound" src="https://www.soundjay.com/human/applause-01.mp3" preload="auto"></audio>
+<audio id="fireworkSound" src="https://www.soundjay.com/button/sounds/button-16.mp3" preload="auto"></audio>
+
+<script>
+const canvas = document.querySelector('.confetti');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let confetti = [];
+
+for (let i = 0; i < 150; i++) {
+    confetti.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 6 + 4,
+        d: Math.random() * 150,
+        color: `hsl(${Math.random() * 360}, 70%, 60%)`,
+        tilt: Math.floor(Math.random() * 10) - 10,
+        tiltAngleIncremental: (Math.random() * 0.07) + 0.05,
+        tiltAngle: 0
+    });
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < confetti.length; i++) {
+        let c = confetti[i];
+        ctx.beginPath();
+        ctx.lineWidth = c.r / 2;
+        ctx.strokeStyle = c.color;
+        ctx.moveTo(c.x + c.tilt + (c.r / 4), c.y);
+        ctx.lineTo(c.x + c.tilt, c.y + c.tilt + (c.r / 4));
+        ctx.stroke();
+    }
+    update();
+}
+
+function update() {
+    for (let i = 0; i < confetti.length; i++) {
+        let c = confetti[i];
+        c.tiltAngle += c.tiltAngleIncremental;
+        c.y += (Math.cos(0.01 + c.d) + 3) / 2;
+        c.tilt = Math.sin(c.tiltAngle - (i / 3)) * 15;
+
+        if (c.y > canvas.height) {
+            confetti[i] = {
+                x: Math.random() * canvas.width,
+                y: -10,
+                r: c.r,
+                d: c.d,
+                color: c.color,
+                tilt: c.tilt,
+                tiltAngleIncremental: c.tiltAngleIncremental,
+                tiltAngle: c.tiltAngle
+            };
+        }
+    }
+}
+
+(function animate() {
+    requestAnimationFrame(animate);
+    draw();
+})();
+
+window.addEventListener('DOMContentLoaded', () => {
+    const cheerSound = document.getElementById('cheerSound');
+    const fireworkSound = document.getElementById('fireworkSound');
+
+    cheerSound.play();
+    setTimeout(() => {
+        fireworkSound.play();
+    }, 500);
+});
+</script>
+</body>
+</html>
