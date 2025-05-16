@@ -56,18 +56,7 @@ AI-powered-mock/
 1. Navigate to the homepage.
 2. Choose a quiz category or create a custom quiz.
 3. Answer the questions and receive real-time feedback.
-4. Review your results and retake quizzes as needed.
-
-## Deployment Instructions
-
-* Push your changes to the GitHub repository:
-
-  ```bash
-  git add .
-  git commit -m "Initial commit"
-  git push origin main
-  ```
-* For hosting, you can use platforms like Heroku, AWS, or Azure.
+4. Review your results and retake quizzes as needed
 
 ## Future Enhancements
 
@@ -81,9 +70,6 @@ Sony Gudise
 Email: mudhirajsony9@gmail.com
 GitHub: sony928
 
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
 
 ## Acknowledgments
 
